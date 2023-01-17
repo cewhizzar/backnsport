@@ -17,10 +17,32 @@ async function get() {
       data: bodyFormData,
       headers: { "Content-Type": "multipart/form-data" },
     };
-    let respuesta = await axios(optionsJson);
-    console.log(respuesta.data.Text);
+    let response = await axios(optionsJson);
+    let estado = response.data.Text;
+    estado = JSON.parse(estado);
+    let match = [];
+    for (let x in estado) {
+      for (let y in estado[x]) {
+        if (estado[x].Column3) {
+          match.push(estado[x].Column3);
+          break;
+        }
+      }
+    }
+    let result = match.filter((item, index) => {
+      return match.indexOf(item) === index;
+    });
+    let tournamet = [];
+    let game = [];
+    let all = [];
+    for (let t in result) {
+      let elSplit = result[t];
+      all = elSplit.split(": ");
+      tournamet.push(all[0]);
+      game.push(all[1]);
+    }
     return {
-      data: "elJson",
+      data: game,
       status: 200,
     };
   } catch (error) {
