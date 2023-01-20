@@ -1,7 +1,7 @@
 const axios = require("axios");
 const db = require("../models/index");
 
-async function get() {
+async function registerLeagues() {
   try {
     const options = {
       method: "GET",
@@ -35,6 +35,15 @@ async function get() {
     console.log(error);
   }
 }
+
+async function getAll() {
+  let allTournamets = await db.tournaments.findAll();
+  return {
+    data: allTournamets,
+    status: 200,
+  };
+}
 module.exports = {
-  get,
+  registerLeagues,
+  getAll,
 };
