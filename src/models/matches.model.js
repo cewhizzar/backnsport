@@ -10,6 +10,6 @@ function model(sequelize) {
     // Desabilitar timestampo por defecto
     timestamps: false,
   };
-  return sequelize.define("users", attributes, options);
+  return sequelize.define("matches", attributes, options);
 }
 module.exports = model;

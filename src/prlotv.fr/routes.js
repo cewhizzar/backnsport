@@ -1,7 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const usersController = require("./pirlo.controller");
+const matchController = require("./pirlo.controller");
 // Rutas
-router.get("/", usersController.get);
+router.get("/match-page", matchController.getAllPirloMatches);
+router.get("/", matchController.get);
+router.post("/register-pirlo-matches", matchController.registerMatches);
 
 module.exports = router;

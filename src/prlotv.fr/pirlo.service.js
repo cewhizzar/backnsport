@@ -2,7 +2,7 @@ const axios = require("axios");
 const FormData = require("form-data");
 const db = require("../models/index");
 
-async function get() {
+async function registerMatches() {
   try {
     let bodyFormData = new FormData();
     bodyFormData.append(
@@ -24,32 +24,103 @@ async function get() {
     for (let x in estado) {
       for (let y in estado[x]) {
         if (estado[x].Column3) {
-          match.push(estado[x].Column3);
+          let theMatch = estado[x].Column3;
+          theMatch = theMatch.replace(" (OPCION HD)", "");
+          match.push(theMatch);
           break;
         }
       }
     }
+    console.log(match);
+
     let result = match.filter((item, index) => {
       return match.indexOf(item) === index;
     });
-    let tournamet = [];
-    let game = [];
     let all = [];
     for (let t in result) {
       let elSplit = result[t];
       all = elSplit.split(": ");
-      tournamet.push(all[0]);
-      game.push(all[1]);
+      let tournament = all[0];
+      let game = all[1];
+      const matches = new db.matches({
+        tournament: tournament,
+        game: game,
+      });
+      await matches.save();
     }
     return {
-      data: match,
+      message: "Registro exitoso, sos el mejor",
       status: 200,
     };
   } catch (error) {
     console.log(error);
+    return {
+      message: "Algo salio mal",
+      status: 500,
+    };
+  }
+}
+
+async function getAllPirloMatches() {
+  try {
+    let matches = await db.matches.findAll({
+      attributes: ["game"],
+    });
+    if (matches.length === 0) {
+      matches = [
+        "Barcelona vs Barcelona",
+        "Barcelona vs Barcelona",
+        "Barcelona vs Barcelona",
+        "Barcelona vs Barcelona",
+        "Barcelona vs Barcelona",
+        "Barcelona vs Barcelona",
+        "Barcelona vs Barcelona",
+        "Barcelona vs Barcelona",
+      ];
+    }
+    return {
+      data: matches,
+      status: 200,
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      message: "Algo salio mal",
+      status: 500,
+    };
+  }
+}
+async function get() {
+  try {
+    let matches = [
+      "Toronja vs Cuatro",
+      "Toronja vs Cuatro",
+      "Toronja vs Cuatro",
+      "Toronja vs Cuatro",
+      "Toronja vs Cuatro",
+      "Toronja vs Cuatro",
+      "Toronja vs Cuatro",
+      "Toronja vs Cuatro",
+      "Toronja vs Cuatro",
+      "Toronja vs Cuatro",
+      "Toronja vs Cuatro",
+    ];
+
+    return {
+      data: matches,
+      status: 200,
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      message: "Algo salio mal",
+      status: 500,
+    };
   }
 }
 
 module.exports = {
+  registerMatches,
+  getAllPirloMatches,
   get,
 };
