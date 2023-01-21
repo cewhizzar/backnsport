@@ -42,7 +42,7 @@ async function get() {
       game.push(all[1]);
     }
     return {
-      data: game,
+      data: match,
       status: 200,
     };
   } catch (error) {

@@ -36,8 +36,10 @@ async function registerLeagues() {
   }
 }
 
-async function getAll() {
-  let allTournamets = await db.tournaments.findAll();
+async function getAllTournametsPage() {
+  let allTournamets = await db.tournaments.findAll({
+    attributes: ["name", "imageSearch"],
+  });
   return {
     data: allTournamets,
     status: 200,
@@ -45,5 +47,5 @@ async function getAll() {
 }
 module.exports = {
   registerLeagues,
-  getAll,
+  getAllTournametsPage,
 };
