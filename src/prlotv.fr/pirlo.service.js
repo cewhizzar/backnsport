@@ -31,7 +31,6 @@ async function registerMatches() {
         }
       }
     }
-    console.log(match);
 
     let result = match.filter((item, index) => {
       return match.indexOf(item) === index;
@@ -42,9 +41,18 @@ async function registerMatches() {
       all = elSplit.split(": ");
       let tournament = all[0];
       let game = all[1];
+      let img = await db.tournaments.findOne({
+        where: {
+          name: tournament,
+        },
+        attributes: ["imageSearch"],
+      });
+      let noExist =
+        "https://www.google.com/url?sa=i&url=https%3A%2F%2Ficon-library.com%2Ficon%2Fsoccer-icon-png-11.html&psig=AOvVaw0MvMbPWH4xaNvSCVNQDidU&ust=1674447343907000&source=images&cd=vfe&ved=0CA0QjRxqFwoTCOCajc2o2vwCFQAAAAAdAAAAABAD";
       const matches = new db.matches({
         tournament: tournament,
         game: game,
+        img: img ? img.dataValues.imageSearch : noExist,
       });
       await matches.save();
     }
