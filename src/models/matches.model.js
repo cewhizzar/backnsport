@@ -5,6 +5,7 @@ function model(sequelize) {
     tournament: { type: DataTypes.STRING, allowNull: false },
     game: { type: DataTypes.STRING, allowNull: false },
     img: { type: DataTypes.STRING, allowNull: false },
+    state: { type: DataTypes.STRING, allowNull: false },
   };
 
   const options = {

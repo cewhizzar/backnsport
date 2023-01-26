@@ -47,12 +47,12 @@ async function registerMatches() {
         },
         attributes: ["imageSearch"],
       });
-      let noExist =
-        "https://www.google.com/url?sa=i&url=https%3A%2F%2Ficon-library.com%2Ficon%2Fsoccer-icon-png-11.html&psig=AOvVaw0MvMbPWH4xaNvSCVNQDidU&ust=1674447343907000&source=images&cd=vfe&ved=0CA0QjRxqFwoTCOCajc2o2vwCFQAAAAAdAAAAABAD";
+      let noExist = "https://media.api-sports.io/football/leagues/23.png";
       const matches = new db.matches({
         tournament: tournament,
         game: game,
         img: img ? img.dataValues.imageSearch : noExist,
+        state: "live",
       });
       await matches.save();
     }
@@ -72,7 +72,7 @@ async function registerMatches() {
 async function getAllPirloMatches() {
   try {
     let matches = await db.matches.findAll({
-      attributes: ["game"],
+      attributes: ["game", "img", "tournament", "state"],
     });
     if (matches.length === 0) {
       matches = [
