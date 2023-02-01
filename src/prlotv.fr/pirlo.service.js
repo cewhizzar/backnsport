@@ -4,6 +4,7 @@ const db = require("../models/index");
 
 async function registerMatches() {
   try {
+    //traer y formatear partidos desde la pagina de pirlotv
     let bodyFormData = new FormData();
     bodyFormData.append(
       "link_1496943989",
@@ -35,11 +36,15 @@ async function registerMatches() {
     let result = match.filter((item, index) => {
       return match.indexOf(item) === index;
     });
+    // organizar y registrar matches en la db
     let all = [];
     for (let t in result) {
       let elSplit = result[t];
       all = elSplit.split(": ");
       let tournament = all[0];
+      if (tournament === "LaLiga") {
+        tournament = "La Liga";
+      }
       let game = all[1];
       let img = await db.tournaments.findOne({
         where: {
@@ -47,12 +52,13 @@ async function registerMatches() {
         },
         attributes: ["imageSearch"],
       });
-      let noExist = "https://media.api-sports.io/football/leagues/23.png";
+      let noExist = "https://media-3.api-sports.io/football/leagues/1.png";
       const matches = new db.matches({
         tournament: tournament,
         game: game,
         img: img ? img.dataValues.imageSearch : noExist,
-        state: "live",
+        state: "offline",
+        stream: m3u8 ? m3u8 : "",
       });
       await matches.save();
     }
@@ -72,20 +78,23 @@ async function registerMatches() {
 async function getAllPirloMatches() {
   try {
     let matches = await db.matches.findAll({
-      attributes: ["game", "img", "tournament", "state"],
+      attributes: ["game", "img", "tournament", "state", "stream"],
     });
     if (matches.length === 0) {
-      matches = [
-        "Barcelona vs Barcelona",
-        "Barcelona vs Barcelona",
-        "Barcelona vs Barcelona",
-        "Barcelona vs Barcelona",
-        "Barcelona vs Barcelona",
-        "Barcelona vs Barcelona",
-        "Barcelona vs Barcelona",
-        "Barcelona vs Barcelona",
-      ];
+      return {
+        data: [
+          {
+            game: "Match not found",
+            img: "https://media-3.api-sports.io/football/leagues/1.png",
+            tournament: "Tournament not found",
+            state: "00:00",
+            stream: "",
+          },
+        ],
+        status: 200,
+      };
     }
+
     return {
       data: matches,
       status: 200,
