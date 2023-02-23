@@ -6,7 +6,8 @@ function model(sequelize) {
     game: { type: DataTypes.STRING, allowNull: false },
     img: { type: DataTypes.STRING, allowNull: false },
     state: { type: DataTypes.STRING, allowNull: false },
-    stream: { type: DataTypes.STRING, allowNull: true },
+    stream: { type: DataTypes.STRING(1000), allowNull: true },
+    stream2: { type: DataTypes.STRING(1000), allowNull: true },
   };
 
   const options = {

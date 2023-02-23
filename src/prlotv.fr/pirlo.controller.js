@@ -8,18 +8,18 @@ async function registerMatches(_req, res, _next) {
     console.log(error);
   }
 }
-
-async function getAllPirloMatches(_req, res, _next) {
+async function testJson(_req, res, _next) {
   try {
-    const result = await match.getAllPirloMatches();
+    const result = await match.testJson();
     return res.status(result.status).json(result);
   } catch (error) {
     console.log(error);
   }
 }
-async function get(_req, res, _next) {
+
+async function getAllPirloMatches(req, res, _next) {
   try {
-    const result = await match.get();
+    const result = await match.getAllPirloMatches(req.query);
     return res.status(result.status).json(result);
   } catch (error) {
     console.log(error);
@@ -29,5 +29,5 @@ async function get(_req, res, _next) {
 module.exports = {
   registerMatches,
   getAllPirloMatches,
-  get,
+  testJson,
 };
