@@ -101,7 +101,14 @@ async function getAllPirloMatches(tournamets) {
           where: {
             tournament: array[x],
           },
-          attributes: ["game", "img", "tournament", "state", "stream"],
+          attributes: [
+            "game",
+            "img",
+            "tournament",
+            "state",
+            "stream",
+            "stream2",
+          ],
         });
         for (let game in consult) {
           amatches.push(consult[game].dataValues);
@@ -113,7 +120,7 @@ async function getAllPirloMatches(tournamets) {
       };
     }
     matches = await db.matches.findAll({
-      attributes: ["game", "img", "tournament", "state", "stream"],
+      attributes: ["game", "img", "tournament", "state", "stream", "stream2"],
     });
     if (matches.length === 0) {
       return {
